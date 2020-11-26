@@ -17,6 +17,8 @@ class DiaryProvider with ChangeNotifier {
     _entries.add(newEntry);
     Controller.addEntry(newEntry);
     _entries = await Controller.getEntries();
+    print('entriees ');
+    print(_entries);
     notifyListeners();
   }
 

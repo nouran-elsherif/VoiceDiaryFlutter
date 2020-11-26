@@ -15,7 +15,7 @@ class Entry {
     return {
       'id': entryId,
       'entry_text': entryText,
-      'entry_date': entryDate,
+      'entry_date': entryDate.toString(),
     };
   }
 }

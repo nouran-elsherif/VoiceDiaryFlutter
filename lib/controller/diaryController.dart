@@ -1,4 +1,6 @@
 // import 'package:flutter/foundation.dart';
+import 'dart:collection';
+
 import '../models/entry.dart';
 import '../helpers/db_helper.dart';
 
@@ -30,10 +32,11 @@ class Controller {
   static Future<List<Entry>> getEntries() async {
     final List<Map<String, dynamic>> maps = await DBHelper.getEntries();
     final List<Entry> entries = List.generate(maps.length, (i) {
+      // Date
       return Entry(
           entryId: maps[i]['id'],
           entryText: maps[i]['entry_text'],
-          entryDate: maps[i]['entry_date']);
+          entryDate: DateTime.parse(maps[i]['entry_date'].toString()));
     });
     print(entries);
     return entries;

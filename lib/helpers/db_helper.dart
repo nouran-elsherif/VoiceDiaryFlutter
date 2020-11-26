@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 
-const String ENTRY_TABLE = "entry";
+const String ENTRY_TABLE = "diary_entries";
 
 class DBHelper {
   static Future<sql.Database> database() async {
@@ -9,8 +9,8 @@ class DBHelper {
     return sql.openDatabase(path.join(dbPath, 'entries.db'),
         onCreate: (db, version) {
       return db.execute(
-          'CREATE TABLE diary_entries(id TEXT PRIMARY KEY, entry_text TEXT, entry_date Date)');
-    }, version: 2);
+          'CREATE TABLE diary_entries(id TEXT PRIMARY KEY, entry_text TEXT, entry_date TEXT)');
+    }, version: 1);
   }
 
   static Future<void> addEntry(
