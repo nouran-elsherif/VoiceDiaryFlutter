@@ -26,7 +26,8 @@ class DBHelper {
     return db.query(table, orderBy: "entry_date DESC");
   }
 
-  Future<void> deleteEntry({String table = ENTRY_TABLE, int id}) async {
+  static Future<void> deleteEntry(
+      {String table = ENTRY_TABLE, String id}) async {
     // Get a reference to the database.
     final db = await DBHelper.database();
 

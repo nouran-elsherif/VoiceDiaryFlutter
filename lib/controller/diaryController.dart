@@ -42,5 +42,7 @@ class Controller {
     return entries;
   }
 
-  static void deleteEntry() {}
+  static void deleteEntry(Entry entry) async {
+    await DBHelper.deleteEntry(id: entry.entryId);
+  }
 }

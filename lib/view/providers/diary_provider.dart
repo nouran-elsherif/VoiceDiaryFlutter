@@ -22,6 +22,12 @@ class DiaryProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteEntry(int index) async {
+    Controller.deleteEntry(_entries[index]);
+    _entries = await Controller.getEntries();
+    notifyListeners();
+  }
+
   Future<void> getEntries() async {
     final dataList = await Controller.getEntries();
     _entries = dataList;
