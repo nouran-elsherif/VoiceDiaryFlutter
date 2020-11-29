@@ -4,7 +4,8 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class SpeechScreen extends StatefulWidget {
   final Function setText;
-  SpeechScreen({this.setText});
+  final String currentText;
+  SpeechScreen({this.setText, this.currentText});
   @override
   _SpeechScreenState createState() => _SpeechScreenState();
 }
@@ -19,6 +20,9 @@ class _SpeechScreenState extends State<SpeechScreen> {
   void initState() {
     super.initState();
     _speech = stt.SpeechToText();
+    if (widget.currentText != null) {
+      _text = widget.currentText;
+    }
   }
 
   void _listen() async {

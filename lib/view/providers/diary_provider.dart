@@ -16,16 +16,18 @@ class DiaryProvider with ChangeNotifier {
         entryId: DateTime.now().toString(), entryText: text, entryDate: date);
     _entries.add(newEntry);
     Controller.addEntry(newEntry);
-    _entries = await Controller.getEntries();
-    print('entriees ');
-    print(_entries);
-    notifyListeners();
+    getEntries();
+    // _entries = await Controller.getEntries();
+    // print('entriees ');
+    // print(_entries);
+    // notifyListeners();
   }
 
   void deleteEntry(int index) async {
     Controller.deleteEntry(_entries[index]);
-    _entries = await Controller.getEntries();
-    notifyListeners();
+    getEntries();
+    // _entries = await Controller.getEntries();
+    // notifyListeners();
   }
 
   Future<void> getEntries() async {
@@ -37,5 +39,6 @@ class DiaryProvider with ChangeNotifier {
   void updateCurrentEntry(Entry currentSelectedEntry) {
     _currentText = currentSelectedEntry.entryText;
     _currentDate = currentSelectedEntry.entryDate;
+    notifyListeners();
   }
 }
