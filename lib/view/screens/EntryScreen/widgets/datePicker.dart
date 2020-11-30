@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 
 class MyDatePicker extends StatefulWidget {
   final Function onSelectDate;
-  MyDatePicker({this.onSelectDate}); //{Key key, this.title}) : super(key: key);
+  final DateTime selectedDate;
+  MyDatePicker(
+      {this.onSelectDate,
+      this.selectedDate}); //{Key key, this.title}) : super(key: key);
 
   // final String title;
 
@@ -30,6 +33,13 @@ class _MyDatePickerState extends State<MyDatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    // print("Selecteeed date " + widget.selectedDate.toString());
+    // DateTime tempDate =
+    //     widget.selectedDate != null ? widget.selectedDate : selectedDate;
+    // setState(() {
+    //   selectedDate = tempDate;
+    // });
+
     return Container(
       // appBar: AppBar(
       //   title: Text(widget.title),

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import './datePicker.dart';
 import './speechToText.dart';
-import '../providers/diary_provider.dart';
+import '../../../providers/diary_provider.dart';
 
 class NewEntry extends StatefulWidget {
   @override
@@ -17,10 +17,14 @@ class _NewEntryState extends State<NewEntry> {
 
   void _setText(String text) {
     setState(() => entryText = text);
+    Provider.of<DiaryProvider>(context, listen: false)
+        .updateCurrentText(text: entryText);
   }
 
   void _setDate(DateTime date) {
     setState(() => entryDate = date);
+    Provider.of<DiaryProvider>(context, listen: false)
+        .updateCurrentDate(date: entryDate);
   }
 
   void _addEntry() {
@@ -32,7 +36,7 @@ class _NewEntryState extends State<NewEntry> {
   Widget build(BuildContext context) {
     return Container(
         // margin: EdgeInsets.all(10),
-        // height: 300,
+        // height: MediaQuery.of(context).size.height * 0.5,
         child: Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -49,9 +53,11 @@ class _NewEntryState extends State<NewEntry> {
             children: <Widget>[
               MyDatePicker(
                 onSelectDate: _setDate,
+                selectedDate: Provider.of<DiaryProvider>(context).currentDate,
               ),
               SpeechScreen(
                 setText: _setText,
+                selectedText: Provider.of<DiaryProvider>(context).currentText,
               ),
               FloatingActionButton(
                 onPressed: _addEntry,

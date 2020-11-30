@@ -1,48 +1,55 @@
 // import 'package:flutter/foundation.dart';
-import 'dart:collection';
-
-import '../models/entry.dart';
-import '../helpers/db_helper.dart';
+// import 'dart:collection';
+import '../models/entities/entryEntity.dart';
+import '../models/models/entryModel.dart';
+import '../view/constants/controllerFunctionNames.dart';
 
 class Controller {
-  Controller controller;
+  static Controller _controllerInstance;
+  EntryModel model = EntryModel();
 
-  Controller() {
-    if (controller == null) {
-      controller = Controller();
+  static get instance {
+    if (_controllerInstance == null) {
+      _controllerInstance = Controller._internal();
     }
-    // return controller;
+    return _controllerInstance;
   }
 
-  static void addEntry(Entry newEntry) {
-    // Entry diaryEntry = Entry(
-    //     entryId: DateTime.now().toString(),
-    //     entryDate: entryDate,
-    //     entryText: entryText);
-    print(newEntry);
-    DBHelper.addEntry(data: newEntry.toMap()
-        // {
-        //   'id': diaryEntry.entryId,
-        //   'entry_text': diaryEntry.entryText,
-        //   'entry_date': diaryEntry.entryDate,
-        // }
-        );
+  Controller._internal();
+
+  // dynamic callWithoutAsync(DiaryControllerFunctions function,[]){}
+
+  Future<dynamic> callAsync(
+      {DiaryControllerAsyncFunctions function,
+      Entry addEntryEntry,
+      Entry deleteEntryEntry}) async {
+    try {
+      switch (function) {
+        case DiaryControllerAsyncFunctions.addEntry:
+          await _addEntry(addEntryEntry);
+          return;
+        case DiaryControllerAsyncFunctions.deleteEntry:
+          await _deleteEntry(deleteEntryEntry);
+          return;
+        case DiaryControllerAsyncFunctions.getEntries:
+          List<Entry> entries = await _getEntries();
+          if (entries.isEmpty) return [];
+          return entries;
+      }
+    } catch (error) {
+      print("Error in asyncCall " + error.toString());
+    }
   }
 
-  static Future<List<Entry>> getEntries() async {
-    final List<Map<String, dynamic>> maps = await DBHelper.getEntries();
-    final List<Entry> entries = List.generate(maps.length, (i) {
-      // Date
-      return Entry(
-          entryId: maps[i]['id'],
-          entryText: maps[i]['entry_text'],
-          entryDate: DateTime.parse(maps[i]['entry_date'].toString()));
-    });
-    print(entries);
-    return entries;
+  Future<void> _addEntry(Entry entry) async {
+    await model.addEntry(entry);
   }
 
-  static void deleteEntry(Entry entry) async {
-    await DBHelper.deleteEntry(id: entry.entryId);
+  Future<List<Entry>> _getEntries() async {
+    return model.getEntries();
+  }
+
+  Future<void> _deleteEntry(Entry entry) async {
+    await model.deleteEntry(entry);
   }
 }

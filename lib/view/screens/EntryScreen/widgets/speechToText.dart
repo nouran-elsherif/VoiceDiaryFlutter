@@ -4,8 +4,8 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class SpeechScreen extends StatefulWidget {
   final Function setText;
-  final String currentText;
-  SpeechScreen({this.setText, this.currentText});
+  final String selectedText;
+  SpeechScreen({this.setText, this.selectedText});
   @override
   _SpeechScreenState createState() => _SpeechScreenState();
 }
@@ -20,9 +20,9 @@ class _SpeechScreenState extends State<SpeechScreen> {
   void initState() {
     super.initState();
     _speech = stt.SpeechToText();
-    if (widget.currentText != null) {
-      _text = widget.currentText;
-    }
+    // if (widget.currentText != null) {
+    //   _text = widget.currentText;
+    // }
   }
 
   void _listen() async {
@@ -51,6 +51,10 @@ class _SpeechScreenState extends State<SpeechScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // String tempText = widget.selectedText != null ? widget.selectedText : _text;
+    // setState(() {
+    //   _text = tempText;
+    // });
     return Container(
         // appBar: AppBar(
         //   title: Text('Confidence: ${(_confidence * 100.0).toStringAsFixed(1)}%'),

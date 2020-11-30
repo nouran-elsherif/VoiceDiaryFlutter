@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/diary_provider.dart';
+import '../../../providers/diary_provider.dart';
 
 class EntryList extends StatefulWidget {
   @override
@@ -9,11 +9,6 @@ class EntryList extends StatefulWidget {
 }
 
 class _EntryListState extends State<EntryList> {
-  // void _updateCurrentEntry() {
-  //   Provider.of<DiaryProvider>(context, listen: false)
-  //       .updateCurrentEntry(currentSelectedEntry);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,7 +54,12 @@ class _EntryListState extends State<EntryList> {
                               onTap: () {
                                 Provider.of<DiaryProvider>(context,
                                         listen: false)
-                                    .updateCurrentEntry(entries.entries[i]);
+                                    .updateCurrentText(
+                                        text: entries.entries[i].entryText);
+                                Provider.of<DiaryProvider>(context,
+                                        listen: false)
+                                    .updateCurrentDate(
+                                        date: entries.entries[i].entryDate);
                                 //update new entry part with date and text
                               }))),
         ));

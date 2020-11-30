@@ -4,7 +4,18 @@ import 'package:path/path.dart' as path;
 const String ENTRY_TABLE = "diary_entries";
 
 class DBHelper {
-  static Future<sql.Database> database() async {
+  static DBHelper _dbInstance;
+
+  static get instance {
+    if (_dbInstance == null) {
+      _dbInstance = DBHelper._internal();
+    }
+    return _dbInstance;
+  }
+
+  DBHelper._internal();
+
+  Future<sql.Database> _database() async {
     final dbPath = await sql.getDatabasesPath();
     return sql.openDatabase(path.join(dbPath, 'entries.db'),
         onCreate: (db, version) {
@@ -13,25 +24,23 @@ class DBHelper {
     }, version: 1);
   }
 
-  static Future<void> addEntry(
+  Future<void> addEntry(
       {String table = ENTRY_TABLE, Map<String, Object> data}) async {
-    final db = await DBHelper.database();
+    final db = await _database();
     await db.insert(table, data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
   }
 
-  static Future<List<Map<String, dynamic>>> getEntries(
+  Future<List<Map<String, dynamic>>> getEntries(
       {String table = ENTRY_TABLE}) async {
-    final db = await DBHelper.database();
+    final db = await _database();
     return db.query(table, orderBy: "entry_date DESC");
   }
 
-  static Future<void> deleteEntry(
-      {String table = ENTRY_TABLE, String id}) async {
+  Future<void> deleteEntry({String table = ENTRY_TABLE, String id}) async {
     // Get a reference to the database.
-    final db = await DBHelper.database();
+    final db = await _database();
 
-    // Remove the Dog from the Database.
     await db.delete(
       table,
       where: "id = ?",

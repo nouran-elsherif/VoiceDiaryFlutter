@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import './view/providers/diary_provider.dart';
 
 // import './widgets/speechToText.dart';
-import './view/screens/entryScreen.dart';
+import 'view/screens/EntryScreen/entryScreen.dart';
 
 void main() {
   runApp(MyApp());

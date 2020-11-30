@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/entryList.dart';
-import '../widgets/newEntry.dart';
+import './widgets/entryList.dart';
+import './widgets/newEntry.dart';
 
 class EntryScreen extends StatefulWidget {
   @override
