@@ -5,7 +5,8 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 class SpeechScreen extends StatefulWidget {
   final Function setText;
   final String selectedText;
-  SpeechScreen({this.setText, this.selectedText});
+  final bool isCurrentlySelected;
+  SpeechScreen({this.setText, this.selectedText, this.isCurrentlySelected});
   @override
   _SpeechScreenState createState() => _SpeechScreenState();
 }
@@ -51,44 +52,39 @@ class _SpeechScreenState extends State<SpeechScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // String tempText = widget.selectedText != null ? widget.selectedText : _text;
-    // setState(() {
-    //   _text = tempText;
-    // });
+    String tempText = widget.isCurrentlySelected && widget.selectedText != null
+        ? widget.selectedText
+        : _text; //widget.selectedText != null ? widget.selectedText : _text;
+    setState(() {
+      _text = tempText;
+    });
     return Container(
-        // appBar: AppBar(
-        //   title: Text('Confidence: ${(_confidence * 100.0).toStringAsFixed(1)}%'),
-        //   actions: [],
-        // ),
+        child: Column(children: [
+      SingleChildScrollView(
+        reverse: true,
         child: Column(
-            // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-            // floatingActionButton:
+            // height: 200,
+            // padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 150.0),
             children: [
-          SingleChildScrollView(
-            reverse: true,
-            child: Column(
-                // height: 200,
-                // padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 150.0),
-                children: [
-                  Container(
-                      // margin: const EdgeInsets.all(10.0),
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blueAccent)),
-                      child: Text(
-                        _text,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 24.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400),
-                      ))
-                ]),
-          ),
-          FloatingActionButton(
-              onPressed: _listen,
-              child: Icon(_isListening ? Icons.mic : Icons.mic_none)),
-        ]));
+              Container(
+                  // margin: const EdgeInsets.all(10.0),
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blueAccent)),
+                  child: Text(
+                    _text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400),
+                  ))
+            ]),
+      ),
+      FloatingActionButton(
+          onPressed: _listen,
+          child: Icon(_isListening ? Icons.mic : Icons.mic_none)),
+    ]));
   }
 }

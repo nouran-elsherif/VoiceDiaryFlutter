@@ -69,6 +69,13 @@ class _EntryListState extends State<EntryList> {
                                             .UPDATE_CURRENT_DATE_FUNCTION,
                                         updateCurrentDate_date:
                                             entries.entries[i].entryDate);
+                                Provider.of<DiaryProvider>(context,
+                                        listen: false)
+                                    .call(
+                                        functionName: DiaryProvider
+                                            .UPDATE_IS_CURRENTLY_SELECTED_FUNCTION,
+                                        updateIsCurrentlySelected_isSelected:
+                                            true);
                                 //update new entry part with date and text
                               }))),
         ));

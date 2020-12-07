@@ -15,11 +15,18 @@ class _NewEntryState extends State<NewEntry> {
   String entryText;
   DateTime entryDate;
 
+  void _updateIsCurrentlySelected() {
+    Provider.of<DiaryProvider>(context, listen: false).call(
+        functionName: DiaryProvider.UPDATE_IS_CURRENTLY_SELECTED_FUNCTION,
+        updateIsCurrentlySelected_isSelected: false);
+  }
+
   void _setText(String text) {
     setState(() => entryText = text);
     Provider.of<DiaryProvider>(context, listen: false).call(
         functionName: DiaryProvider.UPDATE_CURRENT_TEXT_FUNCTION,
         updateCurrentText_text: entryText);
+    _updateIsCurrentlySelected();
   }
 
   void _setDate(DateTime date) {
@@ -27,6 +34,7 @@ class _NewEntryState extends State<NewEntry> {
     Provider.of<DiaryProvider>(context, listen: false).call(
         functionName: DiaryProvider.UPDATE_CURRENT_DATE_FUNCTION,
         updateCurrentDate_date: entryDate);
+    _updateIsCurrentlySelected();
   }
 
   void _addEntry() {
@@ -58,10 +66,14 @@ class _NewEntryState extends State<NewEntry> {
               MyDatePicker(
                 onSelectDate: _setDate,
                 selectedDate: Provider.of<DiaryProvider>(context).currentDate,
+                isCurrentlySelected:
+                    Provider.of<DiaryProvider>(context).isCurrentlySelected,
               ),
               SpeechScreen(
                 setText: _setText,
                 selectedText: Provider.of<DiaryProvider>(context).currentText,
+                isCurrentlySelected:
+                    Provider.of<DiaryProvider>(context).isCurrentlySelected,
               ),
               FloatingActionButton(
                 onPressed: _addEntry,

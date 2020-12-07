@@ -6,9 +6,11 @@ import '../constants/controllerFunctionNames.dart';
 
 class DiaryProvider with ChangeNotifier {
   List<EntryViewModel> _entries = [];
+  bool _isCurrentlySelected = false;
   String _currentText = '';
   DateTime _currentDate = DateTime.now();
-  Controller diaryController = Controller.instance;
+  Controller _diaryController = Controller.instance;
+
   //async function names
   static const String ADD_ENTRY_ASYNC_FUNCTION = "addEntry";
   static const String DELETE_ENTRY_ASYNC_FUNCTION = "deleteEntry";
@@ -18,6 +20,8 @@ class DiaryProvider with ChangeNotifier {
   //non async function names
   static const String UPDATE_CURRENT_TEXT_FUNCTION = "updateCurrentText";
   static const String UPDATE_CURRENT_DATE_FUNCTION = "updateCurrentDate";
+  static const String UPDATE_IS_CURRENTLY_SELECTED_FUNCTION =
+      "updateIsCurrentlySelected";
 
   List<EntryViewModel> get entries {
     return [..._entries];
@@ -31,10 +35,15 @@ class DiaryProvider with ChangeNotifier {
     return _currentDate;
   }
 
+  bool get isCurrentlySelected {
+    return _isCurrentlySelected;
+  }
+
   dynamic call({
     @required String functionName,
     String updateCurrentText_text,
     DateTime updateCurrentDate_date,
+    bool updateIsCurrentlySelected_isSelected,
   }) {
     try {
       switch (functionName) {
@@ -42,6 +51,9 @@ class DiaryProvider with ChangeNotifier {
           return _updateCurrentText(updateCurrentText_text);
         case UPDATE_CURRENT_DATE_FUNCTION:
           return _updateCurrentDate(updateCurrentDate_date);
+        case UPDATE_IS_CURRENTLY_SELECTED_FUNCTION:
+          return _updateIsCurrentlySelected(
+              updateIsCurrentlySelected_isSelected);
       }
     } catch (error) {
       print("Error in asyncCall " + error.toString());
@@ -79,7 +91,7 @@ class DiaryProvider with ChangeNotifier {
         entryText: text,
         entryDate: date);
     //_entries.add(newEntry);
-    await diaryController.callAsync(
+    await _diaryController.callAsync(
         functionName: Controller.ADD_ENTRY_ASYNC_FUNCTION,
         addEntry_entry: newEntry); //addEntry(newEntry);
     await _getEntries();
@@ -87,14 +99,14 @@ class DiaryProvider with ChangeNotifier {
   }
 
   Future<void> _deleteEntry(int index) async {
-    await diaryController.callAsync(
+    await _diaryController.callAsync(
         functionName: Controller.DELETE_ENTRY_ASYNC_FUNCTION,
         deleteEntry_entry: _entries[index]); //deleteEntry(_entries[index]);
     await _getEntries();
   }
 
   Future<void> _getEntries() async {
-    final dataList = await diaryController.callAsync(
+    final dataList = await _diaryController.callAsync(
         functionName: Controller.GET_ENTRIES_ASYNC_FUNCTION); //getEntries();
     _entries = dataList;
     print(_entries);
@@ -102,7 +114,7 @@ class DiaryProvider with ChangeNotifier {
   }
 
   Future<EntryViewModel> _getEntryById(String id) async {
-    return await diaryController.callAsync(
+    return await _diaryController.callAsync(
         functionName: Controller.GET_ENTRY_BY_ID_ASYNC_FUNCTION,
         getEntryById_id: id);
   }
@@ -114,6 +126,11 @@ class DiaryProvider with ChangeNotifier {
 
   void _updateCurrentDate(DateTime date) {
     _currentDate = date;
+    notifyListeners();
+  }
+
+  void _updateIsCurrentlySelected(bool isSelected) {
+    _isCurrentlySelected = isSelected;
     notifyListeners();
   }
 }

@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 class MyDatePicker extends StatefulWidget {
   final Function onSelectDate;
   final DateTime selectedDate;
+  final bool isCurrentlySelected;
   MyDatePicker(
       {this.onSelectDate,
-      this.selectedDate}); //{Key key, this.title}) : super(key: key);
+      this.selectedDate,
+      this.isCurrentlySelected}); //{Key key, this.title}) : super(key: key);
 
   // final String title;
 
@@ -35,7 +37,8 @@ class _MyDatePickerState extends State<MyDatePicker> {
   Widget build(BuildContext context) {
     // print("Selecteeed date " + widget.selectedDate.toString());
     DateTime tempDate =
-        widget.selectedDate != null ? widget.selectedDate : selectedDate;
+        widget.isCurrentlySelected ? widget.selectedDate : selectedDate;
+    // widget.selectedDate != null ? widget.selectedDate : selectedDate;
     setState(() {
       selectedDate = tempDate;
     });
