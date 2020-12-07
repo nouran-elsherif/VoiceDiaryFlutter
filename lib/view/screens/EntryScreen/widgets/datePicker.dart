@@ -34,11 +34,11 @@ class _MyDatePickerState extends State<MyDatePicker> {
   @override
   Widget build(BuildContext context) {
     // print("Selecteeed date " + widget.selectedDate.toString());
-    // DateTime tempDate =
-    //     widget.selectedDate != null ? widget.selectedDate : selectedDate;
-    // setState(() {
-    //   selectedDate = tempDate;
-    // });
+    DateTime tempDate =
+        widget.selectedDate != null ? widget.selectedDate : selectedDate;
+    setState(() {
+      selectedDate = tempDate;
+    });
 
     return Container(
       // appBar: AppBar(

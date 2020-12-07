@@ -17,19 +17,23 @@ class _NewEntryState extends State<NewEntry> {
 
   void _setText(String text) {
     setState(() => entryText = text);
-    Provider.of<DiaryProvider>(context, listen: false)
-        .updateCurrentText(text: entryText);
+    Provider.of<DiaryProvider>(context, listen: false).call(
+        functionName: DiaryProvider.UPDATE_CURRENT_TEXT_FUNCTION,
+        updateCurrentText_text: entryText);
   }
 
   void _setDate(DateTime date) {
     setState(() => entryDate = date);
-    Provider.of<DiaryProvider>(context, listen: false)
-        .updateCurrentDate(date: entryDate);
+    Provider.of<DiaryProvider>(context, listen: false).call(
+        functionName: DiaryProvider.UPDATE_CURRENT_DATE_FUNCTION,
+        updateCurrentDate_date: entryDate);
   }
 
   void _addEntry() {
-    Provider.of<DiaryProvider>(context, listen: false)
-        .addEntry(entryText, entryDate);
+    Provider.of<DiaryProvider>(context, listen: false).callAsync(
+        functionName: DiaryProvider.ADD_ENTRY_ASYNC_FUNCTION,
+        addEntry_text: entryText,
+        addEntry_date: entryDate);
   }
 
   @override

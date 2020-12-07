@@ -1,15 +1,25 @@
 import 'package:flutter/foundation.dart';
 import '../../models/entities/entryEntity.dart';
+import '../models/entryViewModel.dart';
 import '../../controller/diaryController.dart';
 import '../constants/controllerFunctionNames.dart';
 
 class DiaryProvider with ChangeNotifier {
-  List<Entry> _entries = [];
+  List<EntryViewModel> _entries = [];
   String _currentText = '';
   DateTime _currentDate = DateTime.now();
   Controller diaryController = Controller.instance;
+  //async function names
+  static const String ADD_ENTRY_ASYNC_FUNCTION = "addEntry";
+  static const String DELETE_ENTRY_ASYNC_FUNCTION = "deleteEntry";
+  static const String GET_ENTRIES_ASYNC_FUNCTION = "getEntries";
+  static const String GET_ENTRY_BY_ID_ASYNC_FUNCTION = "getEntryById";
 
-  List<Entry> get entries {
+  //non async function names
+  static const String UPDATE_CURRENT_TEXT_FUNCTION = "updateCurrentText";
+  static const String UPDATE_CURRENT_DATE_FUNCTION = "updateCurrentDate";
+
+  List<EntryViewModel> get entries {
     return [..._entries];
   }
 
@@ -21,37 +31,88 @@ class DiaryProvider with ChangeNotifier {
     return _currentDate;
   }
 
-  void addEntry(String text, DateTime date) async {
-    final newEntry = Entry(
-        entryId: DateTime.now().toString(), entryText: text, entryDate: date);
+  dynamic call({
+    @required String functionName,
+    String updateCurrentText_text,
+    DateTime updateCurrentDate_date,
+  }) {
+    try {
+      switch (functionName) {
+        case UPDATE_CURRENT_TEXT_FUNCTION:
+          return _updateCurrentText(updateCurrentText_text);
+        case UPDATE_CURRENT_DATE_FUNCTION:
+          return _updateCurrentDate(updateCurrentDate_date);
+      }
+    } catch (error) {
+      print("Error in asyncCall " + error.toString());
+    }
+  }
+
+  Future<dynamic> callAsync({
+    @required String functionName,
+    String addEntry_text,
+    DateTime addEntry_date,
+    int deleteEntry_index,
+    String getEntryById_id,
+  }) async {
+    try {
+      switch (functionName) {
+        case ADD_ENTRY_ASYNC_FUNCTION:
+          return await _addEntry(addEntry_text, addEntry_date);
+        case DELETE_ENTRY_ASYNC_FUNCTION:
+          return await _deleteEntry(deleteEntry_index);
+        case GET_ENTRIES_ASYNC_FUNCTION:
+          return await _getEntries();
+        case GET_ENTRY_BY_ID_ASYNC_FUNCTION:
+          return await _getEntryById(getEntryById_id);
+        // case UPDATE_ENTRY_ASYNC_FUNCTION:
+        //   return await _updateEntry(updateEntry_entry);
+      }
+    } catch (error) {
+      print("Error in asyncCall " + error.toString());
+    }
+  }
+
+  Future<EntryViewModel> _addEntry(String text, DateTime date) async {
+    final newEntry = EntryViewModel(
+        entryId: DateTime.now().millisecondsSinceEpoch.toString(),
+        entryText: text,
+        entryDate: date);
     //_entries.add(newEntry);
     await diaryController.callAsync(
-        function: DiaryControllerAsyncFunctions.addEntry,
-        addEntryEntry: newEntry); //addEntry(newEntry);
-    getEntries();
+        functionName: Controller.ADD_ENTRY_ASYNC_FUNCTION,
+        addEntry_entry: newEntry); //addEntry(newEntry);
+    await _getEntries();
+    return newEntry;
   }
 
-  void deleteEntry(int index) async {
+  Future<void> _deleteEntry(int index) async {
     await diaryController.callAsync(
-        function: DiaryControllerAsyncFunctions.deleteEntry,
-        deleteEntryEntry: _entries[index]); //deleteEntry(_entries[index]);
-    getEntries();
+        functionName: Controller.DELETE_ENTRY_ASYNC_FUNCTION,
+        deleteEntry_entry: _entries[index]); //deleteEntry(_entries[index]);
+    await _getEntries();
   }
 
-  Future<void> getEntries() async {
+  Future<void> _getEntries() async {
     final dataList = await diaryController.callAsync(
-        function: DiaryControllerAsyncFunctions.getEntries); //getEntries();
+        functionName: Controller.GET_ENTRIES_ASYNC_FUNCTION); //getEntries();
     _entries = dataList;
     print(_entries);
     notifyListeners();
   }
 
-  void updateCurrentText({String text}) {
+  Future<EntryViewModel> _getEntryById(String id) async {
+    return await diaryController.callAsync(
+        functionName: Controller.GET_ENTRY_BY_ID_ASYNC_FUNCTION,
+        getEntryById_id: id);
+  }
+
+  void _updateCurrentText(String text) {
     _currentText = text;
     notifyListeners();
   }
 
-  void updateCurrentDate({DateTime date}) {
+  void _updateCurrentDate(DateTime date) {
     _currentDate = date;
     notifyListeners();
   }

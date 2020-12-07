@@ -1,1 +1,7 @@
-enum DiaryControllerAsyncFunctions { addEntry, deleteEntry, getEntries }
+enum DiaryControllerAsyncFunctions {
+  addEntry,
+  deleteEntry,
+  getEntries,
+  getEntryById,
+  updateEntry
+}

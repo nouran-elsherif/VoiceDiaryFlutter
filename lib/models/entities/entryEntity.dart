@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
+import '../../view/models/entryViewModel.dart';
 
 class Entry {
   final String entryId;
   final String entryText;
-  final DateTime entryDate;
+  final int entryDate;
 
   Entry({
     @required this.entryId,
@@ -17,5 +18,21 @@ class Entry {
       'entry_text': entryText,
       'entry_date': entryDate.toString(),
     };
+  }
+
+  static Entry fromMap(Map<String, dynamic> map) {
+    return Entry(
+      entryId: map['id'],
+      entryText: map['entry_text'],
+      entryDate: map['entry_date'],
+    );
+  }
+
+  static Entry fromViewModel(EntryViewModel entryViewModel) {
+    return Entry(
+      entryId: entryViewModel.entryId,
+      entryText: entryViewModel.entryText,
+      entryDate: entryViewModel.entryDate.millisecondsSinceEpoch,
+    );
   }
 }

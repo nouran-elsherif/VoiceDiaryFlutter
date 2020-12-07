@@ -14,8 +14,8 @@ class _EntryListState extends State<EntryList> {
     return Container(
         height: MediaQuery.of(context).size.height * 0.45,
         child: FutureBuilder(
-          future:
-              Provider.of<DiaryProvider>(context, listen: false).getEntries(),
+          future: Provider.of<DiaryProvider>(context, listen: false).callAsync(
+              functionName: DiaryProvider.GET_ENTRIES_ASYNC_FUNCTION),
           builder: (ctx, snapshot) => snapshot.connectionState ==
                   ConnectionState.waiting
               ? Center(
@@ -46,7 +46,10 @@ class _EntryListState extends State<EntryList> {
                                           onPressed: () {
                                             Provider.of<DiaryProvider>(context,
                                                     listen: false)
-                                                .deleteEntry(i);
+                                                .callAsync(
+                                                    functionName: DiaryProvider
+                                                        .DELETE_ENTRY_ASYNC_FUNCTION,
+                                                    deleteEntry_index: i);
                                           },
                                           child: Icon(Icons.delete)),
                                     )
@@ -54,12 +57,18 @@ class _EntryListState extends State<EntryList> {
                               onTap: () {
                                 Provider.of<DiaryProvider>(context,
                                         listen: false)
-                                    .updateCurrentText(
-                                        text: entries.entries[i].entryText);
+                                    .call(
+                                        functionName: DiaryProvider
+                                            .UPDATE_CURRENT_TEXT_FUNCTION,
+                                        updateCurrentText_text:
+                                            entries.entries[i].entryText);
                                 Provider.of<DiaryProvider>(context,
                                         listen: false)
-                                    .updateCurrentDate(
-                                        date: entries.entries[i].entryDate);
+                                    .call(
+                                        functionName: DiaryProvider
+                                            .UPDATE_CURRENT_DATE_FUNCTION,
+                                        updateCurrentDate_date:
+                                            entries.entries[i].entryDate);
                                 //update new entry part with date and text
                               }))),
         ));

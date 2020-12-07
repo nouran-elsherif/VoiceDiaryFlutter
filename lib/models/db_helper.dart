@@ -7,6 +7,7 @@ class DBHelper {
   static DBHelper _dbInstance;
 
   static get instance {
+    print('DBHelper Inst.');
     if (_dbInstance == null) {
       _dbInstance = DBHelper._internal();
     }
@@ -16,11 +17,13 @@ class DBHelper {
   DBHelper._internal();
 
   Future<sql.Database> _database() async {
+    print('DBHelper Inst. _database');
     final dbPath = await sql.getDatabasesPath();
+    print('DBHelper Inst. _database $dbPath');
     return sql.openDatabase(path.join(dbPath, 'entries.db'),
         onCreate: (db, version) {
       return db.execute(
-          'CREATE TABLE diary_entries(id TEXT PRIMARY KEY, entry_text TEXT, entry_date TEXT)');
+          'CREATE TABLE diary_entries(id TEXT PRIMARY KEY, entry_text TEXT, entry_date INTEGER)');
     }, version: 1);
   }
 
@@ -46,5 +49,20 @@ class DBHelper {
       where: "id = ?",
       whereArgs: [id],
     );
+  }
+
+  Future<dynamic> getEntryById(String id) async {
+    final db = await _database();
+    String sql = 'SELECT * from $ENTRY_TABLE WHERE id = $id';
+    // var result = await db.query(ENTRY_TABLE, where: "id = ", whereArgs: [id]);
+    var result = await db.rawQuery(sql);
+    return result.isNotEmpty ? result.first : Null;
+  }
+
+  update(Map<String, dynamic> entry) async {
+    final db = await _database();
+    var result = await db
+        .update(ENTRY_TABLE, entry, where: "id = ?", whereArgs: [entry['id']]);
+    return result;
   }
 }
