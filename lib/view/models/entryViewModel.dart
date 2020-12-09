@@ -17,7 +17,7 @@ class EntryViewModel {
     return {
       'id': entryId,
       'entry_text': entryText,
-      'entry_date': entryDate.toString(),
+      'entry_date': entryDate,
     };
   }
 
@@ -30,6 +30,9 @@ class EntryViewModel {
   }
 
   static EntryViewModel fromEntity(Entry entryEntity) {
+    // print("ENTRYVIEWMODEEEEL from entity ");
+    // print(entryEntity.entryDate);
+    // print(entryEntity.entryDate)
     return EntryViewModel(
         entryId: entryEntity.entryId,
         entryText: entryEntity.entryText,

@@ -25,7 +25,11 @@ class _EntryScreenState extends State<EntryScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           EntryList(),
+          // Expanded(
+          //   flex: 2,
+          //   // height: MediaQuery.of(context).size.height * 0.5,
           NewEntry(),
+          // ),
         ],
       ),
     );

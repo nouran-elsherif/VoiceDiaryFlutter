@@ -16,7 +16,7 @@ class Entry {
     return {
       'id': entryId,
       'entry_text': entryText,
-      'entry_date': entryDate.toString(),
+      'entry_date': entryDate,
     };
   }
 
@@ -29,6 +29,8 @@ class Entry {
   }
 
   static Entry fromViewModel(EntryViewModel entryViewModel) {
+    // print("ENTITYYYY fromViewModel");
+    // print(entryViewModel.entryDate.millisecondsSinceEpoch);
     return Entry(
       entryId: entryViewModel.entryId,
       entryText: entryViewModel.entryText,

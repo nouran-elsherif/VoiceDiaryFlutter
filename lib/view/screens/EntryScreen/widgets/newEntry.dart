@@ -46,45 +46,50 @@ class _NewEntryState extends State<NewEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Expanded(
+        flex: 2,
         // margin: EdgeInsets.all(10),
         // height: MediaQuery.of(context).size.height * 0.5,
         child: Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      // elevation: 5,
-      child: Container(
-          // height: 300,
-          // crossAxisAlignment: CrossAxisAlignment.end,
-          padding: EdgeInsets.all(10),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              MyDatePicker(
-                onSelectDate: _setDate,
-                selectedDate: Provider.of<DiaryProvider>(context).currentDate,
-                isCurrentlySelected:
-                    Provider.of<DiaryProvider>(context).isCurrentlySelected,
-              ),
-              SpeechScreen(
-                setText: _setText,
-                selectedText: Provider.of<DiaryProvider>(context).currentText,
-                isCurrentlySelected:
-                    Provider.of<DiaryProvider>(context).isCurrentlySelected,
-              ),
-              FloatingActionButton(
-                onPressed: _addEntry,
-                child: Text('Save'),
-                backgroundColor: Colors.pinkAccent,
-              ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          // elevation: 5,
+          child: Container(
+              // height: 300,
+              // crossAxisAlignment: CrossAxisAlignment.end,
+              padding: EdgeInsets.all(8),
+              child: Container(
+                  // flex: 1,
+                  child: Column(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  MyDatePicker(
+                    onSelectDate: _setDate,
+                    selectedDate:
+                        Provider.of<DiaryProvider>(context).currentDate,
+                    isCurrentlySelected:
+                        Provider.of<DiaryProvider>(context).isCurrentlySelected,
+                  ),
+                  SpeechScreen(
+                    setText: _setText,
+                    selectedText:
+                        Provider.of<DiaryProvider>(context).currentText,
+                    isCurrentlySelected:
+                        Provider.of<DiaryProvider>(context).isCurrentlySelected,
+                  ),
+                  FloatingActionButton(
+                    onPressed: _addEntry,
+                    child: Text('Save'),
+                    backgroundColor: Colors.pinkAccent,
+                  ),
 
-              // Text(entryText),
-            ],
-          )),
-    ));
+                  // Text(entryText),
+                ],
+              ))),
+        ));
   }
 }
 
