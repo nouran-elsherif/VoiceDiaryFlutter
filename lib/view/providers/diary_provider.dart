@@ -56,7 +56,7 @@ class DiaryProvider with ChangeNotifier {
               updateIsCurrentlySelected_isSelected);
       }
     } catch (error) {
-      print("Error in asyncCall " + error.toString());
+      print("Error in DiaryProvider Call " + error.toString());
     }
   }
 
@@ -81,11 +81,12 @@ class DiaryProvider with ChangeNotifier {
         //   return await _updateEntry(updateEntry_entry);
       }
     } catch (error) {
-      print("Error in asyncCall " + error.toString());
+      print("Error in DiaryProvider asyncCall " + error.toString());
     }
   }
 
   Future<EntryViewModel> _addEntry(String text, DateTime date) async {
+    if (date == null) date = DateTime.now();
     final newEntry = EntryViewModel(
         entryId: DateTime.now().millisecondsSinceEpoch.toString(),
         entryText: text,

@@ -46,7 +46,7 @@ class Controller {
           return (await _updateEntry(updateEntry_entry));
       }
     } catch (error) {
-      print("Error in asyncCall " + error.toString());
+      print("Error in DiaryController asyncCall " + error.toString());
     }
   }
 

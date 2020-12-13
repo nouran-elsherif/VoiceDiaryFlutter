@@ -21,12 +21,10 @@ class _SpeechScreenState extends State<SpeechScreen> {
   void initState() {
     super.initState();
     _speech = stt.SpeechToText();
-    // if (widget.currentText != null) {
-    //   _text = widget.currentText;
-    // }
   }
 
-  void _listen() async {
+  Future<void> _listen() async {
+    print("inside listen in speech to text");
     if (!_isListening) {
       bool available = await _speech.initialize(
         onStatus: (val) => print('onStatus: $val'),

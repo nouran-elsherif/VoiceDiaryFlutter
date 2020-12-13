@@ -38,6 +38,7 @@ class _NewEntryState extends State<NewEntry> {
   }
 
   void _addEntry() {
+    print("inside add entry new entry");
     Provider.of<DiaryProvider>(context, listen: false).callAsync(
         functionName: DiaryProvider.ADD_ENTRY_ASYNC_FUNCTION,
         addEntry_text: entryText,
@@ -58,7 +59,7 @@ class _NewEntryState extends State<NewEntry> {
           child: Container(
               // height: 300,
               // crossAxisAlignment: CrossAxisAlignment.end,
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.all(5),
               child: Container(
                   // flex: 1,
                   child: Column(

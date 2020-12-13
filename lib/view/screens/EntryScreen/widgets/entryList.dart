@@ -12,7 +12,7 @@ class _EntryListState extends State<EntryList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: MediaQuery.of(context).size.height * 0.45,
+        height: MediaQuery.of(context).size.height * 0.35,
         child: FutureBuilder(
           future: Provider.of<DiaryProvider>(context, listen: false).callAsync(
               functionName: DiaryProvider.GET_ENTRIES_ASYNC_FUNCTION),
